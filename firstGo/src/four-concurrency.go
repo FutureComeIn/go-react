@@ -6,7 +6,7 @@ import (
 )
 
 //Go 语言支持并发，通过go关键字开启 goroutine 即可
-//goroutine是轻量级线程，goroutine的调度是由 Golang 运行时进行管理
+//goroutine是轻量级线程（学名：协程），goroutine的调度是由 Golang 运行时进行管理
 //goroutine 语法格式： go 函数名( 参数列表 )
 
 func main() {
@@ -16,6 +16,7 @@ func main() {
 
 	// 测试通道
 	s := []int{7, 2, 8, -9, 4, 0}
+	// 无缓冲channel：发送和接收需要同步，发送阻塞直到数据被接收，接收阻塞直到读到数据
 	c := make(chan int)
 	go sum(s[:3], c)
 	go sum(s[3:], c)
@@ -24,6 +25,7 @@ func main() {
 
 	bufferChannel()
 
+	// 有缓冲channel：不要求发送和接收操作同步，当缓冲满时发送阻塞，当缓冲空时接收阻塞
 	c2 := make(chan int, 10)
 	go listAndClose(cap(c2), c2)
 	// range 函数遍历每个从通道接收到的数据
@@ -51,8 +53,9 @@ func sum(s []int, c chan int) {
 	}
 	c <- sum // 把 sum 发送到通道 c
 }
+
 // 带缓冲区通道
-func bufferChannel(){
+func bufferChannel() {
 	// 缓冲区大小为2
 	ch := make(chan int, 2)
 	// 因为 ch 是带缓冲的通道，我们可以同时发送两个数据，而不用立刻需要去同步读取数据
@@ -62,6 +65,7 @@ func bufferChannel(){
 	fmt.Println(<-ch)
 	fmt.Println(<-ch)
 }
+
 // 遍历和关闭通道
 func listAndClose(n int, c chan int) {
 	x, y := 0, 1
