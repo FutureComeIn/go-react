@@ -75,3 +75,24 @@ func listAndClose(n int, c chan int) {
 	}
 	close(c)
 }
+
+// select：用于处理通道操作的一种机制，可以同时监听多个通道的读写操作，并在其中任意一个通道就绪时执行相应的操作，这在处理并发任务时非常有用
+func selectUse() {
+	ch1 := make(chan int)
+	ch2 := make(chan int)
+
+	go func() {
+		ch1 <- 10
+	}()
+
+	go func() {
+		ch2 <- 20
+	}()
+
+	select {
+	case num := <-ch1:
+		fmt.Println("Received from ch1:", num)
+	case num := <-ch2:
+		fmt.Println("Received from ch2:", num)
+	}
+}

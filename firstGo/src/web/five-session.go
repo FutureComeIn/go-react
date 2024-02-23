@@ -2,6 +2,7 @@ package main
 
 import (
 	"container/list"
+	"fmt"
 	"github.com/astaxie/session"
 	"sync"
 	"time"
@@ -102,4 +103,18 @@ func (pder *Provider) SessionUpdate(sid string) error {
 func init() {
 	pder.sessions = make(map[string]*list.Element, 0)
 	session.Register("memory", pder)
+}
+
+// defer执行顺序：有多个，和栈一样，后进先出，后调用的先执行；defer在return之后执行，在函数退出之前，defer也可以修改返回值
+// 输出：defer2 defer1 0 （这种写法，没有改i的值，是由于Go的返回机制决定的，创建了一个临时变量保存返回值，指定有名的变量i返回,如func test() (i int) {}，会修改）
+func test() int {
+	i := 0
+	defer func() {
+		fmt.Println("defer1")
+	}()
+	defer func() {
+		i += 1
+		fmt.Println("defer2")
+	}()
+	return i
 }

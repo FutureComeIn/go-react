@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"runtime"
-	"strings"
 	"time"
 )
 
@@ -17,17 +16,43 @@ func (self *User) Test() {
 }
 
 func main() {
-	//timestamp := time.Now().UnixNano() / 1e6
-	//appKey := "8aef559a8dbe6000"
-	//md5Str := "appKey=" + appKey + "&timestamp=" + strconv.Itoa(int(timestamp)) + "&random=" + "222"
-	//h := md5.New()
-	//h.Write([]byte(md5Str))
-	//md5 := hex.EncodeToString(h.Sum(nil))
-	//
-	//fmt.Println(timestamp)
-	//fmt.Println(md5)
+	//x := 10
+	//y := 20
+	//fmt.Println("Before swap:", x, y)
+	//swapData(&x, &y)
+	//fmt.Println("After swap:", x, y)
 
-	fmt.Println(strings.TrimRight("1,2,3,", ","))
+	result := divide(10, 0)
+	fmt.Println("Result:", result)
+	//	执行结果
+	//	Error: division by zero
+	//	Result: 0
+
+	sample := "我爱GO"
+	runeSamp := []rune(sample)
+	runeSamp[0] = '你'
+	fmt.Println(string(runeSamp)) // "你爱GO"
+	fmt.Println(len(runeSamp))    // 4
+}
+
+// panic：是Go语言中用于处理异常的机制。当程序遇到无法处理的错误时，可以使用panic引发一个异常，中断程序的正常执行。
+// recover：用于捕获并处理panic引发的异常，使程序能够继续执行
+func divide(a, b int) int {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Error:", err)
+		}
+	}()
+	if b == 0 {
+		panic("division by zero")
+	}
+	return a / b
+}
+
+func swapData(a, b *int) {
+	temp := *a
+	*a = *b
+	*b = temp
 }
 
 // 计算日期相差多少月

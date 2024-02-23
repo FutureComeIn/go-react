@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+	arrAndSlice()
+	return
 	// 变量定义
 	var a = "hello"
 	b := 4
@@ -94,7 +96,7 @@ func arrAndSlice() {
 	num1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 	num2 := make([]int, 0, 5) // make([]type, length, capacity)，capacity可选参数
 	num2 = append(num2, 2)
-	// 拷贝 num2 的内容到 num3（但新切片得是之前切片的两倍容量）
+	// 拷贝 num2 的内容到 num3（但新切片得是之前切片的两倍容量,不加也行）
 	num3 := make([]int, len(num2), (cap(num2))*2)
 	copy(num3, num2)
 	fmt.Println("切片1：", num2, num1[2:4], num1[2:], num1[:4])
